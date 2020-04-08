@@ -14,10 +14,10 @@ class QBank{
 
 	getQuestionBank() {
 		var request = new XMLHttpRequest();
-		request.open('GET', this.getQuestionsURL(5));
+		request.open('GET', this.getQuestionsURL());
 
 		request.onload = function() {
-			questionBank = JSON.parse(ourRequest.responseText); 
+			questionBank = JSON.parse(request.responseText); 
 		}
 	    request.send();
 	}
@@ -37,12 +37,6 @@ class Form{
 		this.score = 0;
 		this.result ='Something went wrong!';
 
-		// Setup onclick event handlers
-		document.getElementById('opt1').onclick = function() { this.onClickHandler(0); }
-		document.getElementById('opt2').onclick = function() { this.onClickHandler(1); }
-		document.getElementById('opt3').onclick = function() { this.onClickHandler(2); }
-		document.getElementById('opt4').onclick = function() { this.onClickHandler(3); }
-		document.getElementById('next').onclick = function() { this.nextQuestion();}
 	}
 
 	greetUser(name) {
@@ -88,7 +82,7 @@ class Form{
 		
 	}
 
-	onClickHandler(opt) {
+	displayResult(opt) {
 		let resultBanner = document.getElementById('result');
 
 		if(opt == this.rand) {
@@ -100,25 +94,31 @@ class Form{
 	}
 
 	nextQuestion() {
-		if(this.currentQuestion < questionBank.results.length) {
-			this.currentQuestion++; 
-			this.displayQuestionAndOptions(this.currentQuestion);	
-		}
+		if(this.currentQuestion < questionBank.results.length - 1) 
+			this.displayQuestionAndOptions(++this.currentQuestion);	
+		else
+			document.getElementById('result').innerText = "Quiz ended";
 	}
 }
 
 /////////////////////////////////////////////////////////////////////////////////////
 // Execute
-console.time();
 let _QBank = new QBank(10);
 let _Form = new Form();
 
-//QBank.getQuestionBank();
+//_QBank.getQuestionBank();
 _QBank.getTestQuestionBank();
 //console.log(questionBank);
 
 _Form.greetUser('Rutuparn');
 _Form.displayQuestionAndOptions(_Form.currentQuestion);
 
-console.timeEnd();
+// Setup onclick event handlers
+document.getElementById('opt1').onclick = function() { _Form.displayResult(0); }
+document.getElementById('opt2').onclick = function() { _Form.displayResult(1); }
+document.getElementById('opt3').onclick = function() { _Form.displayResult(2); }
+document.getElementById('opt4').onclick = function() { _Form.displayResult(3); }
+document.getElementById('next').onclick = function() { _Form.nextQuestion();}
+
+
 /////////////////////////////////////////////////////////////////////////////////////
