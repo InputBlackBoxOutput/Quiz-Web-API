@@ -1,0 +1,48 @@
+
+body {
+ background-color:#F5F5F5;
+}
+
+#greet {
+	font-size: 1.5em;
+	font-family: Geneva, sans-serif;
+}
+
+.opt{
+	font-size: x-large;
+	font-family: Verdana, Geneva,sans-serif;
+	width: 400px;
+	height: 50px;
+}
+
+#opt1 {
+	background-color: #E21B3C;
+}
+#opt2 {
+	background-color: #1368CE;	
+}
+#opt3 {
+	background-color: #26890C;
+}
+#opt4 {
+	background-color: #D89E00;
+}
+
+#score {
+	font-size: 1.25em;
+	font-family: Geneva, sans-serif;
+	padding: 10px;
+	background-color: #864CBF;
+}
+
+
+.ctrl {
+	font-size: large;
+	font-family:  Verdana, Geneva,sans-serif;
+	background-color: #707070;
+	width:100px;
+	height:40px;
+}
+
+
+
