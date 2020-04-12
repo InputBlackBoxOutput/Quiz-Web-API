@@ -1,6 +1,3 @@
-////////////////////////////////////////////////////////////////////////////////////
-var questionBank;
-
 /////////////////////////////////////////////////////////////////////////////////////
 //Asynchronous JavaScript And XML (AJAX) request
 class QBank{
@@ -17,25 +14,29 @@ class QBank{
 		request.open('GET', this.getQuestionsURL());
 
 		request.onload = function() {
-			questionBank = JSON.parse(request.responseText); 
+			this.questionBank = JSON.parse(request.responseText); 
 		}
 	    request.send();
+		return this.questionBank;
 	}
 
 	//Uncomment the following script tag in index.html before using the getTestQuestionBank() method
 	//<script src="TestQBank.js"></script>
 	getTestQuestionBank() {
-		questionBank = JSON.parse(testQuestions);
+		//console.log(testQuestions);
+		this.questionBank = JSON.parse(testQuestions);
+		return this.questionBank;
 	}
 }
 /////////////////////////////////////////////////////////////////////////////////////
 class Form{
 
-	constructor() {
+	constructor(questionBank) {
 		this.rand = 0;
 		this.currentQuestion = 0;
 		this.score = 0;
 		this.result ='Something went wrong!';
+		this.questionBank = questionBank;
 
 	}
 
@@ -46,36 +47,41 @@ class Form{
 	generateRandomNumber = () => Math.floor(Math.random() * 4); 
 		
 	displayQuestionAndOptions(questionNo) {
+		document.getElementById('score').innerText = `Score: ${this.score}`;
+		document.getElementById('result').innerText = "";
+		
 		this.rand = this.generateRandomNumber();
-
 		switch(this.rand) {
 			case 0:
-			document.getElementById('question').innerText = questionBank.results[questionNo].question;
-			document.getElementById('opt1').innerText = questionBank.results[questionNo].correct_answer;
-			document.getElementById('opt2').innerText = questionBank.results[questionNo].incorrect_answers[0];
-			document.getElementById('opt3').innerText = questionBank.results[questionNo].incorrect_answers[1];
-			document.getElementById('opt4').innerText = questionBank.results[questionNo].incorrect_answers[2];
+			document.getElementById('question').innerText = this.questionBank.results[questionNo].question;
+			document.getElementById('opt1').innerText = this.questionBank.results[questionNo].correct_answer;
+			document.getElementById('opt2').innerText = this.questionBank.results[questionNo].incorrect_answers[0];
+			document.getElementById('opt3').innerText = this.questionBank.results[questionNo].incorrect_answers[1];
+			document.getElementById('opt4').innerText = this.questionBank.results[questionNo].incorrect_answers[2];
 			break;
+			
 			case 1:
-			document.getElementById('question').innerText = questionBank.results[questionNo].question;
-			document.getElementById('opt1').innerText = questionBank.results[questionNo].incorrect_answers[0];
-			document.getElementById('opt2').innerText = questionBank.results[questionNo].correct_answer;
-			document.getElementById('opt3').innerText = questionBank.results[questionNo].incorrect_answers[1];
-			document.getElementById('opt4').innerText = questionBank.results[questionNo].incorrect_answers[2];
+			document.getElementById('question').innerText = this.questionBank.results[questionNo].question;
+			document.getElementById('opt1').innerText = this.questionBank.results[questionNo].incorrect_answers[0];
+			document.getElementById('opt2').innerText = this.questionBank.results[questionNo].correct_answer;
+			document.getElementById('opt3').innerText = this.questionBank.results[questionNo].incorrect_answers[1];
+			document.getElementById('opt4').innerText = this.questionBank.results[questionNo].incorrect_answers[2];
 			break;
+			
 			case 2:
-			document.getElementById('question').innerText = questionBank.results[questionNo].question;
-			document.getElementById('opt1').innerText = questionBank.results[questionNo].incorrect_answers[0];
-			document.getElementById('opt2').innerText = questionBank.results[questionNo].incorrect_answers[1]
-			document.getElementById('opt3').innerText = questionBank.results[questionNo].correct_answer;
-			document.getElementById('opt4').innerText = questionBank.results[questionNo].incorrect_answers[2];
+			document.getElementById('question').innerText = this.questionBank.results[questionNo].question;
+			document.getElementById('opt1').innerText = this.questionBank.results[questionNo].incorrect_answers[0];
+			document.getElementById('opt2').innerText = this.questionBank.results[questionNo].incorrect_answers[1]
+			document.getElementById('opt3').innerText = this.questionBank.results[questionNo].correct_answer;
+			document.getElementById('opt4').innerText = this.questionBank.results[questionNo].incorrect_answers[2];
 			break;
+			
 			case 3:
-			document.getElementById('question').innerText = questionBank.results[questionNo].question;
-			document.getElementById('opt1').innerText = questionBank.results[questionNo].incorrect_answers[0];
-			document.getElementById('opt2').innerText = questionBank.results[questionNo].incorrect_answers[1];
-			document.getElementById('opt3').innerText = questionBank.results[questionNo].incorrect_answers[2];
-			document.getElementById('opt4').innerText = questionBank.results[questionNo].correct_answer;
+			document.getElementById('question').innerText = this.questionBank.results[questionNo].question;
+			document.getElementById('opt1').innerText = this.questionBank.results[questionNo].incorrect_answers[0];
+			document.getElementById('opt2').innerText = this.questionBank.results[questionNo].incorrect_answers[1];
+			document.getElementById('opt3').innerText = this.questionBank.results[questionNo].incorrect_answers[2];
+			document.getElementById('opt4').innerText = this.questionBank.results[questionNo].correct_answer;
 			break;
 		}
 
@@ -87,6 +93,7 @@ class Form{
 
 		if(opt == this.rand) {
 			resultBanner.innerText = 'Correct Answer';	
+			this.score++;
 		}
 		else {
 			resultBanner.innerText = 'Wrong Answer';
@@ -94,21 +101,25 @@ class Form{
 	}
 
 	nextQuestion() {
-		if(this.currentQuestion < questionBank.results.length - 1) 
+		if(this.currentQuestion < this.questionBank.results.length - 1) 
 			this.displayQuestionAndOptions(++this.currentQuestion);	
 		else
-			document.getElementById('result').innerText = "Quiz ended";
+			document.getElementById('result').innerText = "End of quiz";
+	}
+	
+	previousQuestion() {
+		if(this.currentQuestion > 0) 
+			this.displayQuestionAndOptions(--this.currentQuestion);	
+		else
+			document.getElementById('result').innerText = "Start of quiz";
 	}
 }
 
 /////////////////////////////////////////////////////////////////////////////////////
-// Execute
-let _QBank = new QBank(10);
-let _Form = new Form();
 
-//_QBank.getQuestionBank();
-_QBank.getTestQuestionBank();
-//console.log(questionBank);
+let _QBank = new QBank(10);
+let _Form = new Form(_QBank.getTestQuestionBank());
+//let _Form = new Form(_QBank.getQuestionBank());
 
 _Form.greetUser('Rutuparn');
 _Form.displayQuestionAndOptions(_Form.currentQuestion);
@@ -119,6 +130,6 @@ document.getElementById('opt2').onclick = function() { _Form.displayResult(1); }
 document.getElementById('opt3').onclick = function() { _Form.displayResult(2); }
 document.getElementById('opt4').onclick = function() { _Form.displayResult(3); }
 document.getElementById('next').onclick = function() { _Form.nextQuestion();}
-
+document.getElementById('prev').onclick = function() { _Form.previousQuestion();}
 
 /////////////////////////////////////////////////////////////////////////////////////
