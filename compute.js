@@ -5,27 +5,22 @@ class QBank{
 		this.numOfQuestions = numOfQuestions;
 	}
 
-	getQuestionsURL() {
+	get questionsURL() {
 		return 'https://opentdb.com/api.php?amount='+ this.numOfQuestions +'&category=18&type=multiple';
 	}
 
-	getQuestionBank() {
-		var request = new XMLHttpRequest();
-		request.open('GET', this.getQuestionsURL());
-
-		request.onload = function() {
-			this.questionBank = JSON.parse(request.responseText); 
-		}
+	get questionBank() {
+	  	let request = new XMLHttpRequest();
+		request.open('POST', 'https://opentdb.com/api.php?amount=10&category=18&type=multiple');
 	    request.send();
-		return this.questionBank;
+
+	    return JSON.parse(request.responseText);
 	}
 
 	//Uncomment the following script tag in index.html before using the getTestQuestionBank() method
-	//<script src="TestQBank.js"></script>
-	getTestQuestionBank() {
-		//console.log(testQuestions);
-		this.questionBank = JSON.parse(testQuestions);
-		return this.questionBank;
+	//<script src="test.js"></script>
+	get testQuestionBank() {
+		return JSON.parse(testQuestions);
 	}
 }
 /////////////////////////////////////////////////////////////////////////////////////
@@ -41,6 +36,8 @@ class Form{
 		document.getElementById('quiz').style = "font-family:  Verdana, Geneva,sans-serif; background-color:#F5F5F5;";
 		document.getElementById('greet').style ="font-size: 1.5em;";
 		document.getElementById('score').style ="font-size: 1.2em; padding: 10px; background-color: #864CBF;";
+		document.getElementById('prog-bar').style.width = "0%";
+		document.getElementById('question').style.cssText ="font-size: 1.75em; height: 60px";
 
 		let opts = document.getElementsByClassName('opt');
 		for(let i=0; i< opts.length; i++)
@@ -160,15 +157,19 @@ class Form{
 	}
 
 	nextQuestion() {
-		if(this.currentQuestion < this.questionBank.results.length - 1) 
-			this.displayQuestionAndOptions(++this.currentQuestion);	
+		if(this.currentQuestion < this.questionBank.results.length - 1)  {
+			this.displayQuestionAndOptions(++this.currentQuestion);
+			document.getElementById('prog-bar').style.width = 10 * this.currentQuestion +'%';	
+		}
 		else
 			document.getElementById('result').innerText = "End of quiz";
 	}
 	
 	previousQuestion() {
-		if(this.currentQuestion > 0) 
+		if(this.currentQuestion > 0) {
 			this.displayQuestionAndOptions(--this.currentQuestion);	
+			document.getElementById('prog-bar').style.width = 10 * this.currentQuestion +'%';
+		}
 		else
 			document.getElementById('result').innerText = "Start of quiz";
 	}
@@ -177,8 +178,8 @@ class Form{
 /////////////////////////////////////////////////////////////////////////////////////
 
 let _QBank = new QBank(10);
-let _Form = new Form(_QBank.getTestQuestionBank());
-//let _Form = new Form(_QBank.getQuestionBank());
+let _Form = new Form(_QBank.testQuestionBank);
+// let _Form = new Form(_QBank.questionBank);
 
 _Form.greetUser('Rutuparn');
 _Form.displayQuestionAndOptions(_Form.currentQuestion);
