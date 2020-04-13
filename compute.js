@@ -38,18 +38,37 @@ class Form{
 		this.result ='Something went wrong!';
 		this.questionBank = questionBank;
 
+		document.getElementById('quiz').style = "font-family:  Verdana, Geneva,sans-serif; background-color:#F5F5F5;";
+		document.getElementById('greet').style ="font-size: 1.5em;";
+		document.getElementById('score').style ="font-size: 1.2em; padding: 10px; background-color: #864CBF;";
+
+		let opts = document.getElementsByClassName('opt');
+		for(let i=0; i< opts.length; i++)
+		{
+			opts[i].style.cssText = " font-size: x-large; text-align: center; width: 400px; height: 45px;";
+		}
+
+		let ctrls = document.getElementsByClassName('ctrl');
+		for(let i=0; i< ctrls.length; i++)
+		{
+			ctrls[i].style.cssText = " 	font-size: large; background-color: #707070; text-align: center; width:100px; height:40px;";
+		}
 	}
 
 	greetUser(name) {
-		document.getElementById('greet').innerText = 'Hello ' + name + '!';
+		document.getElementById('greet').innerText = 'Hello ' + name + ' !';
 	}
 
 	generateRandomNumber = () => Math.floor(Math.random() * 4); 
 		
 	displayQuestionAndOptions(questionNo) {
-		document.getElementById('score').innerText = `Score: ${this.score}`;
 		document.getElementById('result').innerText = "";
 		
+		document.getElementById('opt1').style.cssText += "background-color: #E21B3C";
+		document.getElementById('opt2').style.cssText += "background-color: #1368CE";
+	    document.getElementById('opt3').style.cssText += "background-color: #26890C";
+		document.getElementById('opt4').style.cssText += "background-color: #D89E00";
+
 		this.rand = this.generateRandomNumber();
 		switch(this.rand) {
 			case 0:
@@ -88,15 +107,55 @@ class Form{
 		
 	}
 
+    // Use below code for debugging/testing 
+	// displayResult(opt) {
+	// 	let resultBanner = document.getElementById('result');
+
+	// 	if(opt == this.rand) {
+	// 		resultBanner.innerText = 'Correct Answer';	
+	// 		this.score++;
+	// 	}
+	// 	else {
+	// 		resultBanner.innerText = 'Wrong Answer';
+	// 	}
+	// }
+
 	displayResult(opt) {
-		let resultBanner = document.getElementById('result');
+		switch(this.rand) {
+			case 0:
+			document.getElementById('opt1').style.cssText += "background-color: #66BF39";
+			document.getElementById('opt2').style.cssText += "background-color: #FF3355";
+			document.getElementById('opt3').style.cssText += "background-color: #FF3355";
+			document.getElementById('opt4').style.cssText += "background-color: #FF3355";
+			break;
+			
+			case 1:
+			document.getElementById('opt1').style.cssText += "background-color: #FF3355";
+			document.getElementById('opt2').style.cssText += "background-color: #66BF39";
+			document.getElementById('opt3').style.cssText += "background-color: #FF3355";
+			document.getElementById('opt4').style.cssText += "background-color: #FF3355";
+			break;
+			
+			case 2:
+			document.getElementById('opt1').style.cssText += "background-color: #FF3355";
+			document.getElementById('opt2').style.cssText += "background-color: #FF3355";
+			document.getElementById('opt3').style.cssText += "background-color: #66BF39";
+			document.getElementById('opt4').style.cssText += "background-color: #FF3355";
+			break;
+			
+			case 3:
+			document.getElementById('opt1').style.cssText += "background-color: #FF3355";
+			document.getElementById('opt2').style.cssText += "background-color: #FF3355";
+			document.getElementById('opt3').style.cssText += "background-color: #FF3355";
+			document.getElementById('opt4').style.cssText += "background-color: #66BF39";
+			break;
+		}
 
 		if(opt == this.rand) {
-			resultBanner.innerText = 'Correct Answer';	
+			this.nextQuestion();
 			this.score++;
-		}
-		else {
-			resultBanner.innerText = 'Wrong Answer';
+			document.getElementById('score').innerText = `Score: ${this.score}`;
+			
 		}
 	}
 
