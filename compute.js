@@ -32,24 +32,11 @@ class Form{
 		this.score = 0;
 		this.result ='Something went wrong!';
 		this.questionBank = questionBank;
+		this.numberOfquestions = questionBank.results.length;
 
 		document.getElementById('quiz').style = "font-family:  Verdana, Geneva,sans-serif; background-color:#F5F5F5;";
-		document.getElementById('greet').style ="font-size: 1.5em;";
-		document.getElementById('score').style ="font-size: 1.2em; padding: 10px; background-color: #864CBF;";
-		document.getElementById('prog-bar').style.width = "0%";
-		document.getElementById('question').style.cssText ="font-size: 1.75em; height: 60px";
+		document.getElementById('score').style ="background-color: #864CBF;";
 
-		let opts = document.getElementsByClassName('opt');
-		for(let i=0; i< opts.length; i++)
-		{
-			opts[i].style.cssText = " font-size: x-large; text-align: center; width: 400px; height: 45px;";
-		}
-
-		let ctrls = document.getElementsByClassName('ctrl');
-		for(let i=0; i< ctrls.length; i++)
-		{
-			ctrls[i].style.cssText = " 	font-size: large; background-color: #707070; text-align: center; width:100px; height:40px;";
-		}
 	}
 
 	greetUser(name) {
@@ -159,7 +146,7 @@ class Form{
 	nextQuestion() {
 		if(this.currentQuestion < this.questionBank.results.length - 1)  {
 			this.displayQuestionAndOptions(++this.currentQuestion);
-			document.getElementById('prog-bar').style.width = 10 * this.currentQuestion +'%';	
+			document.getElementById('prog-bar').style.width = (100/ this.numberOfquestions) * this.currentQuestion +'%';	
 		}
 		else
 			document.getElementById('result').innerText = "End of quiz";
@@ -168,7 +155,7 @@ class Form{
 	previousQuestion() {
 		if(this.currentQuestion > 0) {
 			this.displayQuestionAndOptions(--this.currentQuestion);	
-			document.getElementById('prog-bar').style.width = 10 * this.currentQuestion +'%';
+			document.getElementById('prog-bar').style.width = (100/ this.numberOfquestions) * this.currentQuestion +'%';
 		}
 		else
 			document.getElementById('result').innerText = "Start of quiz";
