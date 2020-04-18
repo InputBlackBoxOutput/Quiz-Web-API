@@ -31,11 +31,14 @@ class Form{
 		this.currentQuestion = 0;
 		this.score = 0;
 		this.result ='Something went wrong!';
+		this.enablePrevButton = false;
 		this.questionBank = questionBank;
 		this.numberOfquestions = questionBank.results.length;
 
-		document.getElementById('quiz').style = "font-family:  Verdana, Geneva,sans-serif; background-color:#F5F5F5;";
-		document.getElementById('score').style ="background-color: #864CBF;";
+		document.getElementById('quiz').style.cssText = "font-family:  Verdana, Geneva,sans-serif; background-color:#F5F5F5;";
+		document.getElementById('score').style.cssText ="background-color: #864CBF;";
+		document.getElementById('score').innerText = `Score: ${this.score}`;
+		document.getElementById('question').style.cssText ="height: 50px;";
 
 	}
 
@@ -53,10 +56,21 @@ class Form{
 	    document.getElementById('opt3').style.cssText += "background-color: #26890C";
 		document.getElementById('opt4').style.cssText += "background-color: #D89E00";
 
+		this.isElementHidden('next', true);
+
+		if(this.enablePrevButton) {
+			if(this.currentQuestion == 0 )
+				this.isElementHidden('prev', true);	
+			else 
+				this.isElementHidden('prev', false);
+		}
+		else
+			this.isElementHidden('prev', true);
+
 		this.rand = this.generateRandomNumber();
 		switch(this.rand) {
 			case 0:
-			document.getElementById('question').innerText = this.questionBank.results[questionNo].question;
+			document.getElementById('question').innerText = (this.currentQuestion+1) +") "+this.questionBank.results[questionNo].question;
 			document.getElementById('opt1').innerText = this.questionBank.results[questionNo].correct_answer;
 			document.getElementById('opt2').innerText = this.questionBank.results[questionNo].incorrect_answers[0];
 			document.getElementById('opt3').innerText = this.questionBank.results[questionNo].incorrect_answers[1];
@@ -64,7 +78,7 @@ class Form{
 			break;
 			
 			case 1:
-			document.getElementById('question').innerText = this.questionBank.results[questionNo].question;
+			document.getElementById('question').innerText = (this.currentQuestion+1)+") "+this.questionBank.results[questionNo].question;
 			document.getElementById('opt1').innerText = this.questionBank.results[questionNo].incorrect_answers[0];
 			document.getElementById('opt2').innerText = this.questionBank.results[questionNo].correct_answer;
 			document.getElementById('opt3').innerText = this.questionBank.results[questionNo].incorrect_answers[1];
@@ -72,7 +86,7 @@ class Form{
 			break;
 			
 			case 2:
-			document.getElementById('question').innerText = this.questionBank.results[questionNo].question;
+			document.getElementById('question').innerText = (this.currentQuestion+1)+") "+this.questionBank.results[questionNo].question;
 			document.getElementById('opt1').innerText = this.questionBank.results[questionNo].incorrect_answers[0];
 			document.getElementById('opt2').innerText = this.questionBank.results[questionNo].incorrect_answers[1]
 			document.getElementById('opt3').innerText = this.questionBank.results[questionNo].correct_answer;
@@ -80,7 +94,7 @@ class Form{
 			break;
 			
 			case 3:
-			document.getElementById('question').innerText = this.questionBank.results[questionNo].question;
+			document.getElementById('question').innerText = (this.currentQuestion+1)+") "+this.questionBank.results[questionNo].question;
 			document.getElementById('opt1').innerText = this.questionBank.results[questionNo].incorrect_answers[0];
 			document.getElementById('opt2').innerText = this.questionBank.results[questionNo].incorrect_answers[1];
 			document.getElementById('opt3').innerText = this.questionBank.results[questionNo].incorrect_answers[2];
@@ -105,6 +119,11 @@ class Form{
 	// }
 
 	displayResult(opt) {
+		if(this.currentQuestion == this.numberOfquestions-1)
+			this.isElementHidden('next', true);
+		else
+			this.isElementHidden('next', false);
+
 		switch(this.rand) {
 			case 0:
 			document.getElementById('opt1').style.cssText += "background-color: #66BF39";
@@ -138,7 +157,7 @@ class Form{
 		if(opt == this.rand) {
 			this.nextQuestion();
 			this.score++;
-			document.getElementById('score').innerText = `Score: ${this.score}`;
+			document.getElementById('score').innerText = `Score: ${this.score}/${this.numberOfquestions}`;
 			
 		}
 	}
@@ -160,23 +179,32 @@ class Form{
 		else
 			document.getElementById('result').innerText = "Start of quiz";
 	}
+
+	isElementHidden(elementId ,isHidden) {
+		if(isHidden)
+			document.getElementById(elementId).hidden = true;
+		else
+			document.getElementById(elementId).hidden = false;
+	}
+
 }
 
 /////////////////////////////////////////////////////////////////////////////////////
-
-let _QBank = new QBank(10);
-let _Form = new Form(_QBank.testQuestionBank);
-// let _Form = new Form(_QBank.questionBank);
-
-_Form.greetUser('Rutuparn');
-_Form.displayQuestionAndOptions(_Form.currentQuestion);
-
 // Setup onclick event handlers
-document.getElementById('opt1').onclick = function() { _Form.displayResult(0); }
-document.getElementById('opt2').onclick = function() { _Form.displayResult(1); }
-document.getElementById('opt3').onclick = function() { _Form.displayResult(2); }
-document.getElementById('opt4').onclick = function() { _Form.displayResult(3); }
-document.getElementById('next').onclick = function() { _Form.nextQuestion();}
-document.getElementById('prev').onclick = function() { _Form.previousQuestion();}
+document.getElementById('opt1').onclick = function() { form.displayResult(0); }
+document.getElementById('opt2').onclick = function() { form.displayResult(1); }
+document.getElementById('opt3').onclick = function() { form.displayResult(2); }
+document.getElementById('opt4').onclick = function() { form.displayResult(3); }
+document.getElementById('next').onclick = function() { form.nextQuestion();}
+document.getElementById('prev').onclick = function() { form.previousQuestion();}
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Use below code for testing
+let qbank = new QBank(10);
+let form = new Form(qbank.testQuestionBank);
+// let form = new Form(qbank.questionBank);
+
+form.greetUser('Rutuparn');
+form.displayQuestionAndOptions(form.currentQuestion);
 
 /////////////////////////////////////////////////////////////////////////////////////
