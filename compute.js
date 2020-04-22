@@ -2,24 +2,28 @@
 //Asynchronous JavaScript And XML (AJAX) request
 class QBank{
 	constructor(numOfQuestions) {
-		this.numOfQuestions = numOfQuestions;
+		this.request = new XMLHttpRequest();
+		this.request.open('POST', 'https://opentdb.com/api.php?amount='+numOfQuestions+'&category=18&type=multiple', true);
+		
+		this.request.onload = () => {
+	    	if(this.request.responseText != "") {
+		    	this.request.resp = JSON.parse(this.request.responseText);
+	    	}	
+		}; 
+
+		this.request.send(null);
 	}
 
-	get questionsURL() {
-		return 'https://opentdb.com/api.php?amount='+ this.numOfQuestions +'&category=18&type=multiple';
-	}
-
-	get questionBank() {
-	  	let request = new XMLHttpRequest();
-		request.open('POST', 'https://opentdb.com/api.php?amount=10&category=18&type=multiple');
-	    request.send();
-
-	    return JSON.parse(request.responseText);
+	getQuestionBank() {
+		if(this.request.resp != undefined)
+			return this.request.resp;
+		else
+			return 1;
 	}
 
 	//Uncomment the following script tag in index.html before using the getTestQuestionBank() method
 	//<script src="test.js"></script>
-	get testQuestionBank() {
+	getTestQuestionBank() {
 		return JSON.parse(testQuestions);
 	}
 }
@@ -34,12 +38,11 @@ class Form{
 		this.enablePrevButton = false;
 		this.questionBank = questionBank;
 		this.numberOfquestions = questionBank.results.length;
+		this.answered = false;
 
 		document.getElementById('quiz').style.cssText = "font-family:  Verdana, Geneva,sans-serif; background-color:#F5F5F5;";
 		document.getElementById('score').style.cssText ="background-color: #864CBF;";
 		document.getElementById('score').innerText = `Score: ${this.score}`;
-		document.getElementById('question').style.cssText ="height: 50px;";
-
 	}
 
 	greetUser(name) {
@@ -50,7 +53,8 @@ class Form{
 		
 	displayQuestionAndOptions(questionNo) {
 		document.getElementById('result').innerText = "";
-		
+		this.answered = false;
+
 		document.getElementById('opt1').style.cssText += "background-color: #E21B3C";
 		document.getElementById('opt2').style.cssText += "background-color: #1368CE";
 	    document.getElementById('opt3').style.cssText += "background-color: #26890C";
@@ -119,11 +123,6 @@ class Form{
 	// }
 
 	displayResult(opt) {
-		if(this.currentQuestion == this.numberOfquestions-1)
-			this.isElementHidden('next', true);
-		else
-			this.isElementHidden('next', false);
-
 		switch(this.rand) {
 			case 0:
 			document.getElementById('opt1').style.cssText += "background-color: #66BF39";
@@ -154,11 +153,26 @@ class Form{
 			break;
 		}
 
-		if(opt == this.rand) {
+		if(opt == this.rand && this.answered == false) {
 			this.nextQuestion();
 			this.score++;
 			document.getElementById('score').innerText = `Score: ${this.score}/${this.numberOfquestions}`;
-			
+			this.answered = true;
+		}
+		else {
+			this.isElementHidden('next', false);
+			this.answered = true;
+		}
+
+		if(this.currentQuestion == this.numberOfquestions-1) {
+			this.isElementHidden('next', true);
+			this.isElementHidden('opt1', true);
+			this.isElementHidden('opt2', true);
+			this.isElementHidden('opt3', true);
+			this.isElementHidden('opt4', true);
+			this.isElementHidden('question', true);
+			document.getElementById('prog-bar').style.width = "100%";
+			document.getElementById('result').innerText = `Your answered: ${this.score}/${this.numberOfquestions} correctly`;
 		}
 	}
 
@@ -166,9 +180,7 @@ class Form{
 		if(this.currentQuestion < this.questionBank.results.length - 1)  {
 			this.displayQuestionAndOptions(++this.currentQuestion);
 			document.getElementById('prog-bar').style.width = (100/ this.numberOfquestions) * this.currentQuestion +'%';	
-		}
-		else
-			document.getElementById('result').innerText = "End of quiz";
+		}		
 	}
 	
 	previousQuestion() {
@@ -176,8 +188,6 @@ class Form{
 			this.displayQuestionAndOptions(--this.currentQuestion);	
 			document.getElementById('prog-bar').style.width = (100/ this.numberOfquestions) * this.currentQuestion +'%';
 		}
-		else
-			document.getElementById('result').innerText = "Start of quiz";
 	}
 
 	isElementHidden(elementId ,isHidden) {
@@ -201,8 +211,8 @@ document.getElementById('prev').onclick = function() { form.previousQuestion();}
 /////////////////////////////////////////////////////////////////////////////////////
 // Use below code for testing
 let qbank = new QBank(10);
-let form = new Form(qbank.testQuestionBank);
-// let form = new Form(qbank.questionBank);
+let form = new Form(qbank.getTestQuestionBank());
+console.log(qbank.getQuestionBank());
 
 form.greetUser('Rutuparn');
 form.displayQuestionAndOptions(form.currentQuestion);
