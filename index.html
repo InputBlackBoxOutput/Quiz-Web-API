@@ -1,61 +1,61 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    
-    <title>Quiz</title>
-  </head>
-  
-  <body>
-	<div class="container sm pb-1" id="quiz">
+    <head>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	    <!-- Bootstrap CSS -->
+	    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	    
+	    <title>Quiz</title>
+    </head>
+    <body >
+		<div class="container sm pb-1" id="quiz" style="font-family:  Verdana, Geneva,sans-serif; background-color:#F8F8F8;">
 
-		<div class="row">
-			<div class="col-lg-12">
-				<h3 class="label label-default" id="greet"></h3>
-				<h3 class="label label-default text-white p-1" id = "score">Score</h3>
+			<div class="row">
+				<div class="col-lg-12">
+					<h4 class="label label-default" id="greet"></h4>
+					<h4 class="label label-default text-white p-1" id = "score" style="background-color: #864CBF;">Score</h4>
 
-				<span class="progress m-2">
-				  <div class="progress-bar" style="width: 0%" id="prog-bar"></div>
-				</span>
-					<h5 class="label label-default " id="question"> Question </h5>
+					<span class="progress m-2">
+					  <div class="progress-bar" style="width: 0%" id="prog-bar"></div>
+					</span>
+
+					<h4 class="label label-default pb-1 " id="question"> Question </h4>
+				</div>
 			</div>
+			
+
+			<div class="row mt-2 mb-1 ml-2">
+				<div class="col-lg-5">
+					<h4><button class="btn-block rounded p-2" id="opt1">Option1</button></h4> 
+				</div>
+				<div class="col-lg-5">
+					<h4><button class="btn-block rounded p-2" id="opt2">Option2</button></h4>
+				</div>
+			</div>
+
+			<div class="row mb-2 ml-2">
+				<div class="col-lg-5">
+					<h4><button class="btn-block rounded p-2" id="opt3">Option3</button></h4> 
+				</div>
+				<div class="col-lg-5">
+					<h4><button class="btn-block rounded p-2" id="opt4">Option4</button></h4>
+				</div>
+			</div>
+
+			<div class="row m-1">
+				<div class="col-lg-2 mb-1">
+					<button  class="btn-block rounded " id="prev">Previous</button>
+				</div>
+				<div class="col-lg-6 mb-4">
+					<h3 class="label label-default" id="result"></h3>					
+				</div>
+				<div class="col-lg-2 ml-2">
+					<button  class="btn-block rounded " id="next">Next</button>	
+				</div>
+
+			<script src="test.js"></script> 
+			<script src="compute.js"></script>
 		</div>
-		
-
-		<div class="row mt-2 mb-1">
-			<div class="col-lg-5">
-				<h4><button class="btn-block rounded p-2" id="opt1">Option1</button></h4> 
-			</div>
-			<div class="col-lg-5">
-				<h4><button class="btn-block rounded p-2" id="opt2">Option2</button></h4>
-			</div>
-		</div>
-
-		<div class="row mb-2 ">
-			<div class="col-lg-5">
-				<h4><button class="btn-block rounded p-2" id="opt3">Option3</button></h4> 
-			</div>
-			<div class="col-lg-5">
-				<h4><button class="btn-block rounded p-2" id="opt4">Option4</button></h4>
-			</div>
-		</div>
-
-		<div class="row m-1">
-			<div class="col-lg-2 mb-1">
-				<button  class="btn-block rounded " id="prev">Previous</button>
-			</div>
-			<div class="col-lg-6 mb-4">
-				<h3 class="label label-default" id="result"></h3>					
-			</div>
-			<div class="col-lg-2 ">
-				<button  class="btn-block rounded " id="next">Next</button>	
-			</div>
-
-		<script src="test.js"></script> 
-		<script src="compute.js"></script>
-	</div>
-
+	</body>
 </html>

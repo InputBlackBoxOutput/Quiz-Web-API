@@ -1,48 +1,37 @@
+// Quiz API for adding quizzes to a webpage
+// Written by Rutuparn Pawar (InputBlackBoxOutput)
+
 /////////////////////////////////////////////////////////////////////////////////////
-//Asynchronous JavaScript And XML (AJAX) request
-class QBank{
-	constructor(numOfQuestions) {
-		this.request = new XMLHttpRequest();
-		this.request.open('POST', 'https://opentdb.com/api.php?amount='+numOfQuestions+'&category=18&type=multiple', true);
-		
-		this.request.onload = () => {
-	    	if(this.request.responseText != "") {
-		    	this.request.resp = JSON.parse(this.request.responseText);
-	    	}	
-		}; 
+const quest = document.getElementById('question');
+const opt1_ = document.getElementById('opt1');
+const opt2_ = document.getElementById('opt2');
+const opt3_ = document.getElementById('opt3');
+const opt4_ = document.getElementById('opt4');
 
-		this.request.send(null);
-	}
+const score_ = document.getElementById('score');
+const result_ = document.getElementById('result');
+const prog_ = document.getElementById('prog-bar');
 
-	getQuestionBank() {
-		if(this.request.resp != undefined)
-			return this.request.resp;
-		else
-			return 1;
-	}
-
-	//Uncomment the following script tag in index.html before using the getTestQuestionBank() method
-	//<script src="test.js"></script>
-	getTestQuestionBank() {
-		return JSON.parse(testQuestions);
-	}
-}
 /////////////////////////////////////////////////////////////////////////////////////
-class Form{
-
-	constructor(questionBank) {
+class Quiz{
+	constructor(Qbank) {
 		this.rand = 0;
-		this.currentQuestion = 0;
 		this.score = 0;
-		this.result ='Something went wrong!';
+		this.result ='Something went wrong!';	
+		
 		this.enablePrevButton = false;
-		this.questionBank = questionBank;
-		this.numberOfquestions = questionBank.results.length;
+		this.isElementHidden('prev', !this.enablePrevButton);
+
+		if(Qbank == null) 
+			this.questionBank = this.getTestQuestionBank();
+		else
+			this.questionBank = JSON.parse(Qbank);
+		
+		this.numberOfquestions = this.questionBank.results.length;
+		this.currentQuestion = 0;
 		this.answered = false;
 
-		document.getElementById('quiz').style.cssText = "font-family:  Verdana, Geneva,sans-serif; background-color:#F5F5F5;";
-		document.getElementById('score').style.cssText ="background-color: #864CBF;";
-		document.getElementById('score').innerText = `Score: ${this.score}`;
+		score_.innerText = `Score: ${this.score}`;
 	}
 
 	greetUser(name) {
@@ -52,141 +41,147 @@ class Form{
 	generateRandomNumber = () => Math.floor(Math.random() * 4); 
 		
 	displayQuestionAndOptions(questionNo) {
-		document.getElementById('result').innerText = "";
-		this.answered = false;
-
-		document.getElementById('opt1').style.cssText += "background-color: #E21B3C";
-		document.getElementById('opt2').style.cssText += "background-color: #1368CE";
-	    document.getElementById('opt3').style.cssText += "background-color: #26890C";
-		document.getElementById('opt4').style.cssText += "background-color: #D89E00";
+		result_.innerText = "";
 
 		this.isElementHidden('next', true);
+		this.answered = false;
 
-		if(this.enablePrevButton) {
-			if(this.currentQuestion == 0 )
-				this.isElementHidden('prev', true);	
-			else 
-				this.isElementHidden('prev', false);
-		}
-		else
-			this.isElementHidden('prev', true);
+		opt1_.style.cssText += "background-color: #FA2A4A";  //#E21B3C
+		opt2_.style.cssText += "background-color: #2A7ADA";  //#1368CE
+	    opt3_.style.cssText += "background-color: #3A9A1A";  //#26890C
+ 		opt4_.style.cssText += "background-color: #EAAA1A";  //#D89E00
 
 		this.rand = this.generateRandomNumber();
+		this.question = this.questionBank.results[questionNo];
+
 		switch(this.rand) {
 			case 0:
-			document.getElementById('question').innerText = (this.currentQuestion+1) +") "+this.questionBank.results[questionNo].question;
-			document.getElementById('opt1').innerText = this.questionBank.results[questionNo].correct_answer;
-			document.getElementById('opt2').innerText = this.questionBank.results[questionNo].incorrect_answers[0];
-			document.getElementById('opt3').innerText = this.questionBank.results[questionNo].incorrect_answers[1];
-			document.getElementById('opt4').innerText = this.questionBank.results[questionNo].incorrect_answers[2];
+			quest.innerText = (this.currentQuestion+1) +") "+ this.question.question;
+			opt1_.innerText = this.question.correct_answer;
+			opt2_.innerText = this.question.incorrect_answers[0];
+			opt3_.innerText = this.question.incorrect_answers[1];
+			opt4_.innerText = this.question.incorrect_answers[2];
 			break;
 			
 			case 1:
-			document.getElementById('question').innerText = (this.currentQuestion+1)+") "+this.questionBank.results[questionNo].question;
-			document.getElementById('opt1').innerText = this.questionBank.results[questionNo].incorrect_answers[0];
-			document.getElementById('opt2').innerText = this.questionBank.results[questionNo].correct_answer;
-			document.getElementById('opt3').innerText = this.questionBank.results[questionNo].incorrect_answers[1];
-			document.getElementById('opt4').innerText = this.questionBank.results[questionNo].incorrect_answers[2];
+			quest.innerText = (this.currentQuestion+1)+") "+ this.question.question;
+			opt1_.innerText = this.question.incorrect_answers[0];
+			opt2_.innerText = this.question.correct_answer;
+			opt3_.innerText = this.question.incorrect_answers[1];
+			opt4_.innerText = this.question.incorrect_answers[2];
 			break;
 			
 			case 2:
-			document.getElementById('question').innerText = (this.currentQuestion+1)+") "+this.questionBank.results[questionNo].question;
-			document.getElementById('opt1').innerText = this.questionBank.results[questionNo].incorrect_answers[0];
-			document.getElementById('opt2').innerText = this.questionBank.results[questionNo].incorrect_answers[1]
-			document.getElementById('opt3').innerText = this.questionBank.results[questionNo].correct_answer;
-			document.getElementById('opt4').innerText = this.questionBank.results[questionNo].incorrect_answers[2];
+			quest.innerText = (this.currentQuestion+1)+") "+ this.question.question;
+			opt1_.innerText = this.question.incorrect_answers[0];
+			opt2_.innerText = this.question.incorrect_answers[1]
+			opt3_.innerText = this.question.correct_answer;
+			opt4_.innerText = this.question.incorrect_answers[2];
 			break;
 			
 			case 3:
-			document.getElementById('question').innerText = (this.currentQuestion+1)+") "+this.questionBank.results[questionNo].question;
-			document.getElementById('opt1').innerText = this.questionBank.results[questionNo].incorrect_answers[0];
-			document.getElementById('opt2').innerText = this.questionBank.results[questionNo].incorrect_answers[1];
-			document.getElementById('opt3').innerText = this.questionBank.results[questionNo].incorrect_answers[2];
-			document.getElementById('opt4').innerText = this.questionBank.results[questionNo].correct_answer;
+			quest.innerText = (this.currentQuestion+1)+") "+ this.question.question;
+			opt1_.innerText = this.question.incorrect_answers[0];
+			opt2_.innerText = this.question.incorrect_answers[1];
+			opt3_.innerText = this.question.incorrect_answers[2];
+			opt4_.innerText = this.question.correct_answer;
 			break;
 		}
 
-		
 	}
 
-    // Use below code for debugging/testing 
-	// displayResult(opt) {
-	// 	let resultBanner = document.getElementById('result');
+	checkAnswer(opt) {
+		console.log(`opt:${opt}`);
+		console.log(`rand:${this.rand}`);
+		console.log(`ans:${this.answered}`);
 
-	// 	if(opt == this.rand) {
-	// 		resultBanner.innerText = 'Correct Answer';	
-	// 		this.score++;
-	// 	}
-	// 	else {
-	// 		resultBanner.innerText = 'Wrong Answer';
-	// 	}
-	// }
+		if(opt == this.rand && this.answered == false) {
+			this.score++;
+			score_.innerText = `Score: ${this.score}/${this.numberOfquestions}`;
 
-	displayResult(opt) {
+			this.nextQuestion();
+			this.isElementHidden('next', true);
+			console.log('in if');
+		}
+		else {
+			this.showCorrectAnswer();
+			this.isElementHidden('next', false);
+			this.answered = true;
+			console.log('in else');
+		}	
+	}
+
+	showCorrectAnswer(){
+		// Wrong:FF3355   Correct:66BF39
 		switch(this.rand) {
 			case 0:
-			document.getElementById('opt1').style.cssText += "background-color: #66BF39";
-			document.getElementById('opt2').style.cssText += "background-color: #FF3355";
-			document.getElementById('opt3').style.cssText += "background-color: #FF3355";
-			document.getElementById('opt4').style.cssText += "background-color: #FF3355";
+			opt1_.style.cssText += "background-color: #6FBF3F";
+			opt2_.style.cssText += "background-color: #FF3F5F";
+			opt3_.style.cssText += "background-color: #FF3F5F";
+			opt4_.style.cssText += "background-color: #FF3F5F";
 			break;
 			
 			case 1:
-			document.getElementById('opt1').style.cssText += "background-color: #FF3355";
-			document.getElementById('opt2').style.cssText += "background-color: #66BF39";
-			document.getElementById('opt3').style.cssText += "background-color: #FF3355";
-			document.getElementById('opt4').style.cssText += "background-color: #FF3355";
+			opt1_.style.cssText += "background-color: #FF3F5F";
+			opt2_.style.cssText += "background-color: #6FBF3F";
+			opt3_.style.cssText += "background-color: #FF3F5F";
+			opt4_.style.cssText += "background-color: #FF3F5F";
 			break;
 			
 			case 2:
-			document.getElementById('opt1').style.cssText += "background-color: #FF3355";
-			document.getElementById('opt2').style.cssText += "background-color: #FF3355";
-			document.getElementById('opt3').style.cssText += "background-color: #66BF39";
-			document.getElementById('opt4').style.cssText += "background-color: #FF3355";
+			opt1_.style.cssText += "background-color: #FF3F5F";
+			opt2_.style.cssText += "background-color: #FF3F5F";
+			opt3_.style.cssText += "background-color: #6FBF3F";
+			opt4_.style.cssText += "background-color: #FF3F5F";
 			break;
 			
 			case 3:
-			document.getElementById('opt1').style.cssText += "background-color: #FF3355";
-			document.getElementById('opt2').style.cssText += "background-color: #FF3355";
-			document.getElementById('opt3').style.cssText += "background-color: #FF3355";
-			document.getElementById('opt4').style.cssText += "background-color: #66BF39";
+			opt1_.style.cssText += "background-color: #FF3F5F";
+			opt2_.style.cssText += "background-color: #FF3F5F";
+			opt3_.style.cssText += "background-color: #FF3F5F";
+			opt4_.style.cssText += "background-color: #6FBF3F";
 			break;
-		}
-
-		if(opt == this.rand && this.answered == false) {
-			this.nextQuestion();
-			this.score++;
-			document.getElementById('score').innerText = `Score: ${this.score}/${this.numberOfquestions}`;
-			this.answered = true;
-		}
-		else {
-			this.isElementHidden('next', false);
-			this.answered = true;
-		}
-
-		if(this.currentQuestion == this.numberOfquestions-1) {
-			this.isElementHidden('next', true);
-			this.isElementHidden('opt1', true);
-			this.isElementHidden('opt2', true);
-			this.isElementHidden('opt3', true);
-			this.isElementHidden('opt4', true);
-			this.isElementHidden('question', true);
-			document.getElementById('prog-bar').style.width = "100%";
-			document.getElementById('result').innerText = `Your answered: ${this.score}/${this.numberOfquestions} correctly`;
 		}
 	}
 
 	nextQuestion() {
 		if(this.currentQuestion < this.questionBank.results.length - 1)  {
 			this.displayQuestionAndOptions(++this.currentQuestion);
-			document.getElementById('prog-bar').style.width = (100/ this.numberOfquestions) * this.currentQuestion +'%';	
+			prog_.style.width = (100/ this.numberOfquestions) * this.currentQuestion +'%';	
+		} 
+		else {
+			this.displayResult();
 		}		
+	}
+
+	displayResult() {
+		this.isElementHidden('question', true);
+		this.isElementHidden('opt1', true);
+		this.isElementHidden('opt2', true);
+		this.isElementHidden('opt3', true);
+		this.isElementHidden('opt4', true);
+		this.isElementHidden('next', true);
+		this.isElementHidden('prev', true);
+
+		let r = this.score/this.numberOfquestions;
+		if(r > 0.8)
+			result_.innerText = "Great! ";
+		else if(r >0.4)
+			result_.innerText = "Well done! ";   
+		else
+			result_.innerText = " ";
+
+		prog_.style.width = '100%';
+		result_.innerText += `You Scored: ${this.score}/${this.numberOfquestions}`;
 	}
 	
 	previousQuestion() {
 		if(this.currentQuestion > 0) {
+			this.score -= 1;
+			score_.innerText = `Score: ${this.score}/${this.numberOfquestions}`;
+
 			this.displayQuestionAndOptions(--this.currentQuestion);	
-			document.getElementById('prog-bar').style.width = (100/ this.numberOfquestions) * this.currentQuestion +'%';
+			prog_.style.width = (100/ this.numberOfquestions) * this.currentQuestion +'%';
 		}
 	}
 
@@ -197,24 +192,30 @@ class Form{
 			document.getElementById(elementId).hidden = false;
 	}
 
+	//Uncomment the following script tag in index.html before using the getTestQuestionBank() method
+	//<script src="test.js"></script>
+	getTestQuestionBank() {
+		return JSON.parse(testQuestions);
+	}
+
 }
 
 /////////////////////////////////////////////////////////////////////////////////////
-// Setup onclick event handlers
-document.getElementById('opt1').onclick = function() { form.displayResult(0); }
-document.getElementById('opt2').onclick = function() { form.displayResult(1); }
-document.getElementById('opt3').onclick = function() { form.displayResult(2); }
-document.getElementById('opt4').onclick = function() { form.displayResult(3); }
-document.getElementById('next').onclick = function() { form.nextQuestion();}
-document.getElementById('prev').onclick = function() { form.previousQuestion();}
-
-/////////////////////////////////////////////////////////////////////////////////////
 // Use below code for testing
-let qbank = new QBank(10);
-let form = new Form(qbank.getTestQuestionBank());
-console.log(qbank.getQuestionBank());
+function main() {
+	let form = new Quiz(null);
+	
+	// Setup onclick event handlers
+	opt1_.onclick = function() { form.checkAnswer(0); }
+	opt2_.onclick = function() { form.checkAnswer(1); }
+	opt3_.onclick = function() { form.checkAnswer(2); }
+	opt4_.onclick = function() { form.checkAnswer(3); }
+	document.getElementById('next').onclick = function() { form.nextQuestion();}
+	document.getElementById('prev').onclick = function() { form.previousQuestion();}
 
-form.greetUser('Rutuparn');
-form.displayQuestionAndOptions(form.currentQuestion);
+	form.greetUser('Rutuparn');
+	form.displayQuestionAndOptions(form.currentQuestion);	
+}
 
+main();
 /////////////////////////////////////////////////////////////////////////////////////
