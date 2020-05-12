@@ -91,23 +91,17 @@ class Quiz{
 	}
 
 	checkAnswer(opt) {
-		console.log(`opt:${opt}`);
-		console.log(`rand:${this.rand}`);
-		console.log(`ans:${this.answered}`);
-
 		if(opt == this.rand && this.answered == false) {
 			this.score++;
 			score_.innerText = `Score: ${this.score}/${this.numberOfquestions}`;
 
 			this.nextQuestion();
 			this.isElementHidden('next', true);
-			console.log('in if');
 		}
 		else {
 			this.showCorrectAnswer();
 			this.isElementHidden('next', false);
 			this.answered = true;
-			console.log('in else');
 		}	
 	}
 
@@ -213,7 +207,7 @@ function main() {
 	document.getElementById('next').onclick = function() { form.nextQuestion();}
 	document.getElementById('prev').onclick = function() { form.previousQuestion();}
 
-	form.greetUser('Rutuparn');
+	form.greetUser('there');
 	form.displayQuestionAndOptions(form.currentQuestion);	
 }
 

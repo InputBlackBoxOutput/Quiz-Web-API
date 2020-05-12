@@ -12,6 +12,14 @@ const score_ = document.getElementById('score');
 const result_ = document.getElementById('result');
 const prog_ = document.getElementById('prog-bar');
 
+// Setup onclick event handlers
+opt1_.onclick = function() { form.checkAnswer(0); }
+opt2_.onclick = function() { form.checkAnswer(1); }
+opt3_.onclick = function() { form.checkAnswer(2); }
+opt4_.onclick = function() { form.checkAnswer(3); }
+document.getElementById('next').onclick = function() { form.nextQuestion();}
+document.getElementById('prev').onclick = function() { form.previousQuestion();}
+
 /////////////////////////////////////////////////////////////////////////////////////
 class Quiz{
 	constructor(Qbank) {
@@ -91,23 +99,17 @@ class Quiz{
 	}
 
 	checkAnswer(opt) {
-		console.log(`opt:${opt}`);
-		console.log(`rand:${this.rand}`);
-		console.log(`ans:${this.answered}`);
-
 		if(opt == this.rand && this.answered == false) {
 			this.score++;
 			score_.innerText = `Score: ${this.score}/${this.numberOfquestions}`;
 
 			this.nextQuestion();
 			this.isElementHidden('next', true);
-			console.log('in if');
 		}
 		else {
 			this.showCorrectAnswer();
 			this.isElementHidden('next', false);
 			this.answered = true;
-			console.log('in else');
 		}	
 	}
 
@@ -201,21 +203,4 @@ class Quiz{
 }
 
 /////////////////////////////////////////////////////////////////////////////////////
-// Use below code for testing
-function main() {
-	let form = new Quiz(null);
-	
-	// Setup onclick event handlers
-	opt1_.onclick = function() { form.checkAnswer(0); }
-	opt2_.onclick = function() { form.checkAnswer(1); }
-	opt3_.onclick = function() { form.checkAnswer(2); }
-	opt4_.onclick = function() { form.checkAnswer(3); }
-	document.getElementById('next').onclick = function() { form.nextQuestion();}
-	document.getElementById('prev').onclick = function() { form.previousQuestion();}
 
-	form.greetUser('Rutuparn');
-	form.displayQuestionAndOptions(form.currentQuestion);	
-}
-
-main();
-/////////////////////////////////////////////////////////////////////////////////////
