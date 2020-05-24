@@ -155,7 +155,6 @@ class Quiz{
 		this.isElementHidden('opt3', true);
 		this.isElementHidden('opt4', true);
 		this.isElementHidden('next', true);
-		this.isElementHidden('prev', true);
 
 		let r = this.score/this.numberOfquestions;
 		if(r > 0.8)
@@ -166,7 +165,16 @@ class Quiz{
 			result_.innerText = " ";
 
 		prog_.style.width = '100%';
-		result_.innerText += `You Scored: ${this.score}/${this.numberOfquestions}`;
+		result_.innerText += `  You Scored: ${this.score}/${this.numberOfquestions}`;
+	}
+
+	displayResultDone() {
+		this.isElementHidden('question', false);
+		this.isElementHidden('opt1', false);
+		this.isElementHidden('opt2', false);
+		this.isElementHidden('opt3', false);
+		this.isElementHidden('opt4', false);
+		this.isElementHidden('next', false);
 	}
 	
 	previousQuestion() {
@@ -196,9 +204,10 @@ class Quiz{
 
 /////////////////////////////////////////////////////////////////////////////////////
 // Use below code for testing
-function main() {
-	let form = new Quiz(null);
+function main(questionBank) {
+	let form = new Quiz(questionBank);
 	
+	form.displayResultDone();
 	// Setup onclick event handlers
 	opt1_.onclick = function() { form.checkAnswer(0); }
 	opt2_.onclick = function() { form.checkAnswer(1); }
@@ -211,5 +220,23 @@ function main() {
 	form.displayQuestionAndOptions(form.currentQuestion);	
 }
 
-main();
+main(testQuestions);
+
+/////////////////////////////////////////////////////////////////////////////////////
+quiz_opt1 = document.getElementById('C');
+quiz_opt2 = document.getElementById('M');
+quiz_opt3 = document.getElementById('S');
+
+quiz_opt1.addEventListener('click', function() {
+	main(testQuestions0);
+});
+
+quiz_opt2.addEventListener('click', function() {
+	main(testQuestions1);
+});
+
+quiz_opt3.addEventListener('click', function() {
+	main(testQuestions2);
+});
+
 /////////////////////////////////////////////////////////////////////////////////////

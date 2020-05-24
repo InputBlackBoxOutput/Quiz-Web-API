@@ -174,7 +174,7 @@ class Quiz{
 			result_.innerText = " ";
 
 		prog_.style.width = '100%';
-		result_.innerText += `You Scored: ${this.score}/${this.numberOfquestions}`;
+		result_.innerText += `  You Scored: ${this.score}/${this.numberOfquestions}`;
 	}
 	
 	previousQuestion() {
