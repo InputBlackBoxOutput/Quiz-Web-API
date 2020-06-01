@@ -54,10 +54,10 @@ class Quiz{
 		this.isElementHidden('next', true);
 		this.answered = false;
 
-		opt1_.style.cssText += "background-color: #FA2A4A";  //#E21B3C
-		opt2_.style.cssText += "background-color: #2A7ADA";  //#1368CE
-	    opt3_.style.cssText += "background-color: #3A9A1A";  //#26890C
- 		opt4_.style.cssText += "background-color: #EAAA1A";  //#D89E00
+		opt1_.style.cssText += "background-color: #FF4D6E";  //#E21B3C
+		opt2_.style.cssText += "background-color: #458AFF";  //#1368CE
+	    opt3_.style.cssText += "background-color: #48AF3E";  //#26890C
+ 		opt4_.style.cssText += "background-color: #ECBF12";  //#D89E00
 
 		this.rand = this.generateRandomNumber();
 		this.question = this.questionBank.results[questionNo];
@@ -117,31 +117,31 @@ class Quiz{
 		// Wrong:FF3355   Correct:66BF39
 		switch(this.rand) {
 			case 0:
-			opt1_.style.cssText += "background-color: #6FBF3F";
-			opt2_.style.cssText += "background-color: #FF3F5F";
-			opt3_.style.cssText += "background-color: #FF3F5F";
-			opt4_.style.cssText += "background-color: #FF3F5F";
+			opt1_.style.cssText += "background-color: #76CF49";
+			opt2_.style.cssText += "background-color: #FF6375";
+			opt3_.style.cssText += "background-color: #FF6375";
+			opt4_.style.cssText += "background-color: #FF6375";
 			break;
 			
 			case 1:
-			opt1_.style.cssText += "background-color: #FF3F5F";
-			opt2_.style.cssText += "background-color: #6FBF3F";
-			opt3_.style.cssText += "background-color: #FF3F5F";
-			opt4_.style.cssText += "background-color: #FF3F5F";
+			opt1_.style.cssText += "background-color: #FF6375";
+			opt2_.style.cssText += "background-color: #76CF49";
+			opt3_.style.cssText += "background-color: #FF6375";
+			opt4_.style.cssText += "background-color: #FF6375";
 			break;
 			
 			case 2:
-			opt1_.style.cssText += "background-color: #FF3F5F";
-			opt2_.style.cssText += "background-color: #FF3F5F";
-			opt3_.style.cssText += "background-color: #6FBF3F";
-			opt4_.style.cssText += "background-color: #FF3F5F";
+			opt1_.style.cssText += "background-color: #FF6375";
+			opt2_.style.cssText += "background-color: #FF6375";
+			opt3_.style.cssText += "background-color: #76CF49";
+			opt4_.style.cssText += "background-color: #FF6375";
 			break;
 			
 			case 3:
-			opt1_.style.cssText += "background-color: #FF3F5F";
-			opt2_.style.cssText += "background-color: #FF3F5F";
-			opt3_.style.cssText += "background-color: #FF3F5F";
-			opt4_.style.cssText += "background-color: #6FBF3F";
+			opt1_.style.cssText += "background-color: #FF6375";
+			opt2_.style.cssText += "background-color: #FF6375";
+			opt3_.style.cssText += "background-color: #FF6375";
+			opt4_.style.cssText += "background-color: #76CF49";
 			break;
 		}
 	}
