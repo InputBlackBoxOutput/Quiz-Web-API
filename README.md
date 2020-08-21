@@ -1,5 +1,7 @@
 # Quiz 
-A quiz for nerds, geeks and engineers
+### Add a quiz to your webpage
+
+[Try out an example quiz](https://inputblackboxoutput.github.io/Quiz/) 
 -------------------------------------------------------------------------------------------------------------
 
 # Steps to add quiz to your webpage
@@ -86,7 +88,7 @@ A quiz for nerds, geeks and engineers
 	</div></code>
 ```
 #### STEP 2: Add bootstrap to the HTML file
-To add Bootstrap add the following link tag in the head tag 
+To add Bootstrap, add the following link tag in between the head tags 
 ``` html
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> 
 ```
